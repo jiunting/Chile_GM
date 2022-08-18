@@ -29,12 +29,12 @@ $grdgrad='/Users/jtlin/Documents/Project/GMTplot/Chile/chile.gradient';
 $rupt_path='/Users/jtlin/Documents/Project/GMTplot/Chile_GM/output/ruptures'; #example rupture directory
 $wave_path='/Users/jtlin/Documents/Project/GMTplot/Chile_GM/output/waveforms';
 $prefix='Chile_full_new';
-$run_num='024513'; #so that the path of rupt file=rupt_file+'/'+'subduction.'+run_num+'.rupt' # very long (1000+km)
+#$run_num='024513'; #so that the path of rupt file=rupt_file+'/'+'subduction.'+run_num+'.rupt' # very long (1000+km)
 #$run_num='024898'; # very different hypoclo and centroid
 #$run_num='023494'; # also very different hypoclo and centroid
 #$run_num='021761';
 #$run_num='025413';
-#$run_num='026294';
+$run_num='026294'; #Figure2
 
 $rupt_file="${rupt_path}/${prefix}_subduction.${run_num}.rupt";
 $log_file="${rupt_path}/${prefix}_subduction.${run_num}.log";
@@ -179,7 +179,7 @@ for ($a1=0;$a1<$nfaults;$a1++){
     `gmt psxy element.xy -R -J -L -Cslip_compare.cpt -O -K >> ${base_file}".ps"`; #Use GMT5 if this has issue (plot the triangle color)
     #`gmt psxy element.xy -R -J -W0.01p,100/100/100 -O -K >> $fileout`;
     `gmt psxy element.xy -R -J -W0.01p,200/200/200 -O -K >> ${base_file}".ps"`; #Plot triangle boundary
-    if ($a1==50000){
+    if ($a1==55555){
         last;
     }
 }
@@ -192,8 +192,8 @@ close(PSXY);
 `gmt psbasemap -R -J -Ba0f0g0wsen:."Rupture #$run_num": -O -K >> ${base_file}".ps"`;
 `gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 5p`;
 `gmt psbasemap -R -J -Ba5f2.5g2.5WSen -O -K >> ${base_file}".ps"`;
-`gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 0p MAP_LABEL_OFFSET 2.5p FONT_LABEL 14p FONT_ANNOT_PRIMARY 12p`;
-`gmt pscoast -R$area -J -Df -W1.0 -N1 -Tdg${comp_lon}/${comp_lat}+w0.4i+f1+l",,,N" -Lg${map_scale_lon}/${map_scale_lat}+c${evlo}/${evla}+w200k+l"km"+f -O -K >>${base_file}".ps"`;
+`gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 0p MAP_LABEL_OFFSET 2.5p FONT_LABEL 16p FONT_ANNOT_PRIMARY 14p`;
+`gmt pscoast -R$area -J -Df -W0.5 -N1 -Tdg${comp_lon}/${comp_lat}+w0.4i+f1+l",,,N" -Lg${map_scale_lon}/${map_scale_lat}+c${evlo}/${evla}+w200k+l"km"+f -O -K >>${base_file}".ps"`;
 `gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 5p MAP_LABEL_OFFSET 8p FONT_LABEL 16p FONT_ANNOT_PRIMARY 12p`; #the default
 
 #plot colorbar for slip
@@ -248,7 +248,7 @@ for ($a1=0;$a1<$nfaults;$a1++){
     `gmt psxy element.xy -R -J -L -Cslip_compare_rtime.cpt -O -K >> ${base_file}".ps"`; #Use GMT5 if this has issue (plot the triangle color)
     #`gmt psxy element.xy -R -J -W0.01p,100/100/100 -O -K >> $fileout`;
     `gmt psxy element.xy -R -J -W0.01p,200/200/200 -O -K >> ${base_file}".ps"`; #Plot triangle boundary
-    if ($a1==50000){
+    if ($a1==55555){
         last;
     }
 }
@@ -262,8 +262,8 @@ close(PSXY);
 `gmt psbasemap -R -J -Ba0f0g0wsen:."Rupture #$run_num": -O -K >> ${base_file}".ps"`;
 `gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 5p`;
 `gmt psbasemap -R -J -Ba5f2.5g2.5wSen -O -K >> ${base_file}".ps"`;
-`gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 0p MAP_LABEL_OFFSET 2.5p FONT_LABEL 14p FONT_ANNOT_PRIMARY 12p`;
-`gmt pscoast -R$area -J -Df -W1.0 -N1 -Tdg${comp_lon}/${comp_lat}+w0.4i+f1+l",,,N" -Lg${map_scale_lon}/${map_scale_lat}+c${evlo}/${evla}+w200k+l"km"+f -O -K >>${base_file}".ps"`;
+`gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 0p MAP_LABEL_OFFSET 2.5p FONT_LABEL 16p FONT_ANNOT_PRIMARY 14p`;
+`gmt pscoast -R$area -J -Df -W0.5 -N1 -Tdg${comp_lon}/${comp_lat}+w0.4i+f1+l",,,N" -Lg${map_scale_lon}/${map_scale_lat}+c${evlo}/${evla}+w200k+l"km"+f -O -K >>${base_file}".ps"`;
 `gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 5p MAP_LABEL_OFFSET 8p FONT_LABEL 16p FONT_ANNOT_PRIMARY 12p`; #the default
 
 #plot colorbar for rupt_time
@@ -296,11 +296,12 @@ open(PSXY,"|gmt psxy -R -J  -Sa0.25i -W1p,0/0/0 -G255/150/35 -O -K >>$base_file'
 print PSXY "$evlo $evla\n";
 close(PSXY);
 `gmt gmtset MAP_ANNOT_OFFSET_PRIMARY -3p`;
-`gmt psbasemap -R -J -Ba0f0g0wsen:."Parameterized": -O -K >> ${base_file}".ps"`;
+#`gmt psbasemap -R -J -Ba0f0g0wsen:."Parameterized": -O -K >> ${base_file}".ps"`;
+`gmt psbasemap -R -J -Ba0f0g0wsen:."Simplified": -O -K >> ${base_file}".ps"`;
 `gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 5p`;
 `gmt psbasemap -R -J -Ba5f2.5g2.5WSen -O -K >> ${base_file}".ps"`;
-`gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 0p MAP_LABEL_OFFSET 2.5p FONT_LABEL 14p FONT_ANNOT_PRIMARY 12p`;
-`gmt pscoast -R$area -J -Df -W1.0 -N1 -Tdg${comp_lon}/${comp_lat}+w0.4i+f1+l",,,N" -Lg${map_scale_lon}/${map_scale_lat}+c${evlo}/${evla}+w200k+l"km"+f -O -K >>${base_file}".ps"`;
+`gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 0p MAP_LABEL_OFFSET 2.5p FONT_LABEL 16p FONT_ANNOT_PRIMARY 14p`;
+`gmt pscoast -R$area -J -Df -W0.5 -N1 -Tdg${comp_lon}/${comp_lat}+w0.4i+f1+l",,,N" -Lg${map_scale_lon}/${map_scale_lat}+c${evlo}/${evla}+w200k+l"km"+f -O -K >>${base_file}".ps"`;
 `gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 5p MAP_LABEL_OFFSET 8p FONT_LABEL 16p FONT_ANNOT_PRIMARY 12p`; #the default
 
 #plot colorbar for rupt_time
@@ -335,8 +336,8 @@ close(PSXY);
 `gmt psbasemap -R -J -Ba0f0g0wsen:."Model": -O -K >> ${base_file}".ps"`;
 `gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 5p`;
 `gmt psbasemap -R -J -Ba5f2.5g2.5wSen -O -K >> ${base_file}".ps"`;
-`gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 0p MAP_LABEL_OFFSET 2.5p FONT_LABEL 14p FONT_ANNOT_PRIMARY 12p`;
-`gmt pscoast -R$area -J -Df -W1.0 -N1 -Tdg${comp_lon}/${comp_lat}+w0.4i+f1+l",,,N" -Lg${map_scale_lon}/${map_scale_lat}+c${evlo}/${evla}+w200k+l"km"+f -O -K >>${base_file}".ps"`;
+`gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 0p MAP_LABEL_OFFSET 2.5p FONT_LABEL 16p FONT_ANNOT_PRIMARY 14p`;
+`gmt pscoast -R$area -J -Df -W0.5 -N1 -Tdg${comp_lon}/${comp_lat}+w0.4i+f1+l",,,N" -Lg${map_scale_lon}/${map_scale_lat}+c${evlo}/${evla}+w200k+l"km"+f -O -K >>${base_file}".ps"`;
 `gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 5p MAP_LABEL_OFFSET 8p FONT_LABEL 16p FONT_ANNOT_PRIMARY 12p`; #the default
 
 

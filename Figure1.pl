@@ -194,8 +194,8 @@ for ($epo=0;$epo<=101;$epo++){
     close(PSXY);
 
     #plot fault depth contour
-    `cat $fault | awk 'NR>1{print(\$2,\$3,\$4)}' | gmt pscontour -R -J  -A10,20,30+u" km"+r2.0 -C10,20,30 -W0.5p,50/50/50,-- -O -K >>$fileout".ps"`;
-    `cat $fault | awk 'NR>1{print(\$2,\$3,\$4)}' | gmt pscontour -R -J  -A20,30+u" km"+r0.5 -C10,20,30 -W0.5p,50/50/50,-- -O -K >>$fileout".ps"`;
+    `cat $fault | awk 'NR>1{print(\$2,\$3,\$4)}' | gmt pscontour -R -J  -A10,30,50+u" km"+r1.8 -C10,20,30,40,50 -W0.2p,50/50/50,-- -O -K >>$fileout".ps"`;
+#    `cat $fault | awk 'NR>1{print(\$2,\$3,\$4)}' | gmt pscontour -R -J  -A20,30+u" km"+r0.5 -C10,20,30 -W0.5p,50/50/50,-- -O -K >>$fileout".ps"`;
     
     #plot rupture time contour
 #    `cat $rupt_file | awk '(NR>1 && \$13>0){print(\$2,\$3,\$13)}' | gmt pscontour -R -J  -A100,200,300,400,500+u" s" -C100,200,300,400,500 -W0.5p,50/50/50,-- -O -K >>$fileout".ps"`;
@@ -292,11 +292,11 @@ for ($epo=0;$epo<=101;$epo++){
     #`pscoast -Rd -JA$hypo[0]/$hypo[1]/50/1.6i -Ba20f10g10 -Dl -Gwhite -S200/200/200 -W0.8 -N1 -O -K >>$fileout`;
     #`psbasemap -Rd -JA-71/-20/50/1.6i -Ba20f10g10 -K -O -Y5.8i -X-0.8i >>$fileout`; #-Rg or -Rd is the shorthand for "global" g=0/360 d=-180/180
     `gmt psbasemap -Rd -JA-71/-20/50/1.7i -Ba20f10g10 -K -O -Y6.3i -X-0.5i >>${fileout}.ps`; #-Rg or -Rd is the shorthand for "global" g=0/360 d=-180/180
-    `gmt pscoast -Rd -JA -Ba30f15g15 -Dl -Gwhite -S200/200/200 -W0.2 -N1 -O -K >>${fileout}.ps`;
+    `gmt pscoast -Rd -JA -Ba30f15g15 -Dl -Gwhite -S200/200/200 -W0.2 -N1 -O -K  >>${fileout}.ps`;
     open(PSXY,"|gmt psxy -R -J -Sa0.36c -W0.8p,255/0/0 -O -K >>${fileout}.ps");
     print PSXY "$evlo $evla\n";
     close(PSXY);
-    open(PSTEXT,"|gmt pstext -R -J -F+f12p,Helvetica,blue -O -K >>$fileout'.ps'");
+    open(PSTEXT,"|gmt pstext -R -J -F+f12p,Helvetica,blue -G255/255/255 -C5% -O -K >>$fileout'.ps'");
     $Mw_text=sprintf '%.2f', $mag;
     $tmp_evla1=$evla+15;
     $tmp_evla2=$evla+5;
@@ -342,8 +342,6 @@ for ($epo=0;$epo<=101;$epo++){
     open(PSTEXT,"|gmt pstext -R -J -C10%/10% -G255/255/255 -O -K >>$fileout'.ps'");
     print PSTEXT "460 $tmp_loc_mid 10 0 1 2 ${value}m";
     close(PSTEXT);
-    
- 
 
     
     ###### plot parameter predictions #######
@@ -386,82 +384,84 @@ for ($epo=0;$epo<=101;$epo++){
     `rm $fileout".ps"`;
     last; #stop running the rest of the later OLD part!!
    
-
-
-`gmt psbasemap -R0/510/20/35 -JX2.5i/0.6i -Ba200f100g100/a5f2.5Wsen -G255/255/255 -K -O -Y0.71i >>${fileout}.ps`;
-#---plot real value---
-open(PSXY,"|gmt psxy -R -J  -W1.5p,255/0/255,-- -O -K >>${fileout}.ps");
-print PSXY "0 $evdp\n";
-print PSXY "510 $evdp\n";
-close(PSXY);
-`cat $pred_file | awk '(NR>1 && \$1==${runID} && \$2<=${epo_sec}){print(\$2,\$6)}' | gmt psxy -R -J  -W1.2p,0/0/255 -O -K >>${fileout}.ps`;
-open(PSTEXT,"|gmt pstext -R -J -O -K >>$fileout'.ps'");
-print PSTEXT "475 22.5 10 0 1 2 Dep.";
-close(PSTEXT);
-
-
-`gmt psbasemap -R0/510/-45/-35 -JX2.5i/0.6i -Ba200f100g100/a5f2.5Wsen -G255/255/255 -K -O -Y0.71i >>${fileout}.ps`;
-#---plot real value---
-open(PSXY,"|gmt psxy -R -J  -W1.5p,255/0/255,-- -O -K >>${fileout}.ps");
-print PSXY "0 $evla\n";
-print PSXY "510 $evla\n";
-close(PSXY);
-`cat $pred_file | awk '(NR>1 && \$1==${runID} && \$2<=${epo_sec}){print(\$2,\$5)}' | gmt psxy -R -J  -W1.2p,0/0/255 -O -K >>${fileout}.ps`;
-open(PSTEXT,"|gmt pstext -R -J -O -K >>$fileout'.ps'");
-print PSTEXT "480 -42.5 10 0 1 2 Lat.";
-close(PSTEXT);
-
-    
-`gmt psbasemap -R0/510/-75/-70 -JX2.5i/0.6i -Ba200f100g100/a2f1Wsen -G255/255/255 -K -O -Y0.71i >>${fileout}.ps`;
-#---plot real value---
-open(PSXY,"|gmt psxy -R -J  -W1.5p,255/0/255,-- -O -K >>${fileout}.ps");
-print PSXY "0 $evlo\n";
-print PSXY "510 $evlo\n";
-close(PSXY);
-`cat $pred_file | awk '(NR>1 && \$1==${runID} && \$2<=${epo_sec}){print(\$2,\$4)}' | gmt psxy -R -J  -W1.2p,0/0/255 -O -K >>${fileout}.ps`;
-open(PSTEXT,"|gmt pstext -R -J -O -K >>$fileout'.ps'");
-print PSTEXT "480 -74.0 10 0 1 2 Lon.";
-close(PSTEXT);
-
-
-`gmt psbasemap -R0/510/7.45/9.65 -JX2.5i/0.6i -Ba200f100g100/a1f0.5Wsen -G255/255/255 -K -O -Y0.71i >>${fileout}.ps`;
-#---plot real value---
-open(PSXY,"|gmt psxy -R -J  -W1.5p,255/0/255,-- -O -K >>${fileout}.ps");
-print PSXY "0 ${mag}\n";
-print PSXY "510 ${mag}\n";
-close(PSXY);
-open(PSXY,"|gmt psxy -R -J  -W0.8p,255/0/255,-- -O -K >>${fileout}.ps");
-$mag_up=$mag+0.3;
-print PSXY "0 ${mag_up}\n";
-print PSXY "510 ${mag_up}\n";
-close(PSXY);
-open(PSXY,"|gmt psxy -R -J  -W0.8p,255/0/255,-- -O -K >>${fileout}.ps");
-$mag_low=$mag-0.3;
-print PSXY "0 ${mag_low}\n";
-print PSXY "510 ${mag_low}\n";
-close(PSXY);
-#-----------------------
-`cat $pred_file | awk '(NR>1 && \$1==${runID} && \$2<=${epo_sec}){print(\$2,\$3)}' | gmt psxy -R -J  -W1.2p,0/0/255 -O -K >>${fileout}.ps`;
-open(PSTEXT,"|gmt pstext -R -J -O -K >>$fileout'.ps'");
-print PSTEXT "480 7.75 10 0 1 2 Mw";
-close(PSTEXT);
-
-
-
-open(PSXY,"|gmt psxy -R -J -O  >>$fileout'.ps'");
-close(PSXY);
-
-#`gmt ps2raster $fileout".ps" -Tf`; #convert file.ps to file.pdf
-`gmt ps2raster $fileout".ps" -Tg`; #convert file.ps to file.png
-#`gmt ps2raster $fileout".ps" -Tg`;
-#`sips -s format png $fileout".pdf" --out $fileout".png"`;
-#remove the .pdf,ps files
-`rm $fileout".ps"`;
-#`rm $fileout".pdf"`;
-#`open $fileout".pdf"`;
-
-`gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 5p MAP_LABEL_OFFSET 8p FONT_LABEL 16p FONT_ANNOT_PRIMARY 12p`; #the default
-    
-    last;
+#
+#
+#`gmt psbasemap -R0/510/20/35 -JX2.5i/0.6i -Ba200f100g100/a5f2.5Wsen -G255/255/255 -K -O -Y0.71i >>${fileout}.ps`;
+##---plot real value---
+#open(PSXY,"|gmt psxy -R -J  -W1.5p,255/0/255,-- -O -K >>${fileout}.ps");
+#print PSXY "0 $evdp\n";
+#print PSXY "510 $evdp\n";
+#close(PSXY);
+#`cat $pred_file | awk '(NR>1 && \$1==${runID} && \$2<=${epo_sec}){print(\$2,\$6)}' | gmt psxy -R -J  -W1.2p,0/0/255 -O -K >>${fileout}.ps`;
+#open(PSTEXT,"|gmt pstext -R -J -O -K >>$fileout'.ps'");
+#print PSTEXT "475 22.5 10 0 1 2 Dep.";
+#close(PSTEXT);
+#
+#
+#`gmt psbasemap -R0/510/-45/-35 -JX2.5i/0.6i -Ba200f100g100/a5f2.5Wsen -G255/255/255 -K -O -Y0.71i >>${fileout}.ps`;
+##---plot real value---
+#open(PSXY,"|gmt psxy -R -J  -W1.5p,255/0/255,-- -O -K >>${fileout}.ps");
+#print PSXY "0 $evla\n";
+#print PSXY "510 $evla\n";
+#close(PSXY);
+#`cat $pred_file | awk '(NR>1 && \$1==${runID} && \$2<=${epo_sec}){print(\$2,\$5)}' | gmt psxy -R -J  -W1.2p,0/0/255 -O -K >>${fileout}.ps`;
+#open(PSTEXT,"|gmt pstext -R -J -O -K >>$fileout'.ps'");
+#print PSTEXT "480 -42.5 10 0 1 2 Lat.";
+#close(PSTEXT);
+#
+#
+#`gmt psbasemap -R0/510/-75/-70 -JX2.5i/0.6i -Ba200f100g100/a2f1Wsen -G255/255/255 -K -O -Y0.71i >>${fileout}.ps`;
+##---plot real value---
+#open(PSXY,"|gmt psxy -R -J  -W1.5p,255/0/255,-- -O -K >>${fileout}.ps");
+#print PSXY "0 $evlo\n";
+#print PSXY "510 $evlo\n";
+#close(PSXY);
+#`cat $pred_file | awk '(NR>1 && \$1==${runID} && \$2<=${epo_sec}){print(\$2,\$4)}' | gmt psxy -R -J  -W1.2p,0/0/255 -O -K >>${fileout}.ps`;
+#open(PSTEXT,"|gmt pstext -R -J -O -K >>$fileout'.ps'");
+#print PSTEXT "480 -74.0 10 0 1 2 Lon.";
+#close(PSTEXT);
+#
+#
+#`gmt psbasemap -R0/510/7.45/9.65 -JX2.5i/0.6i -Ba200f100g100/a1f0.5Wsen -G255/255/255 -K -O -Y0.71i >>${fileout}.ps`;
+##---plot real value---
+#open(PSXY,"|gmt psxy -R -J  -W1.5p,255/0/255,-- -O -K >>${fileout}.ps");
+#print PSXY "0 ${mag}\n";
+#print PSXY "510 ${mag}\n";
+#close(PSXY);
+#open(PSXY,"|gmt psxy -R -J  -W0.8p,255/0/255,-- -O -K >>${fileout}.ps");
+#$mag_up=$mag+0.3;
+#print PSXY "0 ${mag_up}\n";
+#print PSXY "510 ${mag_up}\n";
+#close(PSXY);
+#open(PSXY,"|gmt psxy -R -J  -W0.8p,255/0/255,-- -O -K >>${fileout}.ps");
+#$mag_low=$mag-0.3;
+#print PSXY "0 ${mag_low}\n";
+#print PSXY "510 ${mag_low}\n";
+#close(PSXY);
+##-----------------------
+#`cat $pred_file | awk '(NR>1 && \$1==${runID} && \$2<=${epo_sec}){print(\$2,\$3)}' | gmt psxy -R -J  -W1.2p,0/0/255 -O -K >>${fileout}.ps`;
+#open(PSTEXT,"|gmt pstext -R -J -O -K >>$fileout'.ps'");
+#print PSTEXT "480 7.75 10 0 1 2 Mw";
+#close(PSTEXT);
+#
+#
+#
+#open(PSXY,"|gmt psxy -R -J -O  >>$fileout'.ps'");
+#close(PSXY);
+#
+##`gmt ps2raster $fileout".ps" -Tf`; #convert file.ps to file.pdf
+#`gmt ps2raster $fileout".ps" -Tg`; #convert file.ps to file.png
+##`gmt ps2raster $fileout".ps" -Tg`;
+##`sips -s format png $fileout".pdf" --out $fileout".png"`;
+##remove the .pdf,ps files
+##`rm $fileout".ps"`;
+#
+#
+##`rm $fileout".pdf"`;
+##`open $fileout".pdf"`;
+#
+#`gmt gmtset MAP_ANNOT_OFFSET_PRIMARY 5p MAP_LABEL_OFFSET 8p FONT_LABEL 16p FONT_ANNOT_PRIMARY 12p`; #the default
+#
+#    last;
 } #end of epo loop
 
